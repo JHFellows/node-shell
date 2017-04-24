@@ -1,19 +1,19 @@
-process.stdout.write('prompt > ');
-
+var commands = require('./commands.js');
+var chalk = require('chalk');
+var done = function(output) {
+  process.stdout.write(chalk.green(output));;
+  process.stdout.write(chalk.yellow('\nprompt > '));
+};
+// var fs = require('fs');
+process.stdout.write(chalk.yellow('prompt > '));
 process.stdin.on('data', function (data) {
-  var cmd = data.toString().trim(); // remove the newline
+  var arr = data.toString().trim().split(' ');
+  var cmd = arr[0]; // remove the newline
+  var args = arr.slice(1);
 
-  if (cmd === 'pwd') {
-    process.stdout.write(__dirname);
-  }
+  commands[cmd](args, done);
 
-  if(cmd === 'date') {
-    process.stdout.write();
-  }
-
-
-  // process.stdout.write('You typed: ' + cmd);
-  process.stdout.write('\nprompt > ');
-
+  // var returned = commands[cmd](args);
+  // process.stdout.write(chalk.green(returned));
+  // process.stdout.write('\nprompt > ');
 });
-
